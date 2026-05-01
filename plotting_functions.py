@@ -163,16 +163,7 @@ def plot_individual_profiles(landscape, landscape_idx, save_fig=True, output_dir
         plt.tight_layout()
         _save_show(f"{output_dir}/full_elevation_profile_landscape_{landscape_idx}.png")
 
-        plt.figure(figsize=(4, 3))
-        plt.plot(fl['L'], fl['slope'], 'orange', linewidth=2)
-        plt.xlabel("Distance from Outlet (km)", fontsize=10)
-        plt.ylabel("Slope", fontsize=10)
-        plt.title(f"Slope Profile - Landscape {landscape_idx}", fontsize=12)
-        plt.grid(True, alpha=0.3)
-        plt.gca().invert_xaxis()
-        plt.tight_layout()
-        _save_show(f"{output_dir}/slope_profile_landscape_{landscape_idx}.png")
-
+        
 
 def calculate_hypsometry(Z):
     """
@@ -287,8 +278,7 @@ def plot_combined_profiles(landscapes_data, save_fig=True, output_dir="./plots")
 
         if 'full' in profiles:
             full_elevation_profiles.append(profiles['full'])
-            slope_profiles.append(profiles['full'])
-
+            
         hypsometry_data.append(calculate_hypsometry(landscape['Z']))
         slope_area_data.append(calculate_slope_area_relationship(
             landscape['A'] / landscape['cell_length']**2,
@@ -304,7 +294,6 @@ def plot_combined_profiles(landscapes_data, save_fig=True, output_dir="./plots")
         plt.tight_layout()
         if save_fig:
             plt.savefig(f"{output_dir}/{fname_base}.png", dpi=300)
-            plt.savefig(f"{output_dir}/{fname_base}.svg")
             print(f"Saved: {output_dir}/{fname_base}.png")
         plt.show()
 
@@ -330,7 +319,6 @@ def plot_combined_profiles(landscapes_data, save_fig=True, output_dir="./plots")
         ax.invert_xaxis(); plt.tight_layout()
         if save_fig:
             plt.savefig(f"{output_dir}/combined_depth_vs_length.png", dpi=300, bbox_inches='tight')
-            plt.savefig(f"{output_dir}/combined_depth_vs_length.svg")
             print(f"Saved: {output_dir}/combined_depth_vs_length.png")
         plt.show()
 
@@ -339,12 +327,6 @@ def plot_combined_profiles(landscapes_data, save_fig=True, output_dir="./plots")
         for i, p in enumerate(full_elevation_profiles):
             ax.plot(p['L'], p['Z'], label=labels[i], color=colors[i % len(colors)], linewidth=line_w)
         _save(fig, ax, "Distance (km)", "Elevation (m)", "combined_full_elevation_vs_length")
-
-    if slope_profiles:
-        fig, ax = plt.subplots(figsize=(10, 8))
-        for i, p in enumerate(slope_profiles):
-            ax.plot(p['L'], p['slope'], label=labels[i], color=colors[i % len(colors)], linewidth=line_w)
-        _save(fig, ax, "Distance (km)", "Slope", "combined_slope_vs_length")
 
     if hypsometry_data:
         fig, ax = plt.subplots(figsize=(10, 8))
@@ -365,7 +347,6 @@ def plot_combined_profiles(landscapes_data, save_fig=True, output_dir="./plots")
         plt.tight_layout()
         if save_fig:
             plt.savefig(f"{output_dir}/combined_hypsometry.png", dpi=300)
-            plt.savefig(f"{output_dir}/combined_hypsometry.svg")
             print(f"Saved: {output_dir}/combined_hypsometry.png")
         plt.show()
 
@@ -385,12 +366,11 @@ def plot_combined_profiles(landscapes_data, save_fig=True, output_dir="./plots")
         plt.tight_layout()
         if save_fig:
             plt.savefig(f"{output_dir}/combined_slope_area_relationship.png", dpi=300)
-            plt.savefig(f"{output_dir}/combined_slope_area_relationship.svg")
             print(f"Saved: {output_dir}/combined_slope_area_relationship.png")
         plt.show()
 
 
-def plot_all_visualizations(landscapes_data, individual_plots=True, combined_plots=True,
+def plot_all_visualizations(landscapes_data, individual_plots=False, combined_plots=True,
                             elevation_grids=True, save_fig=True, output_dir="./plots"):
     """
     Run all visualization routines for a landscapes dictionary.
@@ -436,7 +416,7 @@ if __name__ == "__main__":
     # =========================================================================
     landscape_file   = "landscape_3d_data.npz"
     output_directory = "./plots"
-    plot_individual  = True
+    plot_individual  = False
     plot_combined    = True
     plot_grids       = True
     save_figures     = True
