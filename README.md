@@ -117,7 +117,7 @@ np.random.seed(42)
 in the paper. Use this as input to `create_3d_landscape` to reproduce the paper figures.
 
 ```python
-from network_generation import load_network_data
+from network_2d_generation import load_network_data
 
 network_data = load_network_data("Original_2D_network_data.npz")
 ```
